@@ -1,0 +1,296 @@
+head	1.16;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.16
+date	2013.10.15.23.37.56;	author -;	state -;
+branches;
+next	1.15;
+
+1.15
+date	2013.10.15.23.03.20;	author -;	state -;
+branches;
+next	1.14;
+
+1.14
+date	2013.10.11.01.48.18;	author -;	state -;
+branches;
+next	1.13;
+
+1.13
+date	2013.10.11.01.44.15;	author -;	state -;
+branches;
+next	1.12;
+
+1.12
+date	2013.10.11.01.17.45;	author -;	state -;
+branches;
+next	1.11;
+
+1.11
+date	2013.10.11.00.44.18;	author -;	state -;
+branches;
+next	1.10;
+
+1.10
+date	2013.09.23.21.30.45;	author -;	state -;
+branches;
+next	1.9;
+
+1.9
+date	2013.09.23.21.27.15;	author -;	state -;
+branches;
+next	1.8;
+
+1.8
+date	2013.09.23.21.14.51;	author -;	state -;
+branches;
+next	1.7;
+
+1.7
+date	2013.09.21.00.52.13;	author -;	state -;
+branches;
+next	1.6;
+
+1.6
+date	2013.09.20.19.38.19;	author -;	state -;
+branches;
+next	1.5;
+
+1.5
+date	2013.09.20.19.26.08;	author -;	state -;
+branches;
+next	1.4;
+
+1.4
+date	2013.09.20.19.23.33;	author -;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2013.09.20.19.23.31;	author -;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2013.09.20.02.55.32;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2013.09.19.23.38.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.16
+log
+@-
+@
+text
+@# Makefile.deps created Tue Oct 15 16:37:56 PDT 2013 by gmake
+astree.o: astree.cc astree.h auxlib.h stringset.h lyutils.h yyparse.h
+emit.o: emit.cc astree.h auxlib.h emit.h lyutils.h yyparse.h
+lyutils.o: lyutils.cc lyutils.h astree.h auxlib.h yyparse.h
+auxlib.o: auxlib.cc auxlib.h
+stringset.o: stringset.cc stringset.h auxlib.h
+main.o: main.cc astree.h auxlib.h emit.h lyutils.h yyparse.h stringset.h
+yylex.o: yylex.cc auxlib.h lyutils.h astree.h yyparse.h
+yyparse.o: yyparse.cc lyutils.h astree.h auxlib.h yyparse.h
+@
+
+
+1.15
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Tue Oct 15 16:03:18 PDT 2013 by gmake
+@
+
+
+1.14
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Thu Oct 10 18:48:18 PDT 2013 by gmake
+@
+
+
+1.13
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Thu Oct 10 18:44:15 PDT 2013 by gmake
+@
+
+
+1.12
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Thu Oct 10 18:17:45 PDT 2013 by gmake
+@
+
+
+1.11
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Thu Oct 10 17:44:18 PDT 2013 by gmake
+@
+
+
+1.10
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Mon Sep 23 14:30:44 PDT 2013 by make
+@
+
+
+1.9
+log
+@-
+@
+text
+@d1 4
+a4 1
+# Makefile.deps created Mon Sep 23 14:25:05 PDT 2013 by make
+d7 3
+@
+
+
+1.8
+log
+@-
+@
+text
+@d1 1
+a1 4
+# Makefile.deps created Mon Sep 23 14:14:51 PDT 2013 by gmake
+astree.o: astree.cc astree.h auxlib.h stringset.h lyutils.h yyparse.hh
+emit.o: emit.cc astree.h auxlib.h emit.h lyutils.h yyparse.hh
+lyutils.o: lyutils.cc lyutils.h astree.h auxlib.h yyparse.hh
+d3 1
+a3 4
+stringset.o: stringset.cc stringset.h
+main.o: main.cc astree.h auxlib.h emit.h lyutils.h yyparse.hh stringset.h
+yylex.o: yylex.cc auxlib.h lyutils.h astree.h yyparse.hh
+yyparse.o: yyparse.cc lyutils.h astree.h auxlib.h yyparse.hh
+@
+
+
+1.7
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Fri Sep 20 17:52:13 PDT 2013 by gmake
+d6 1
+a6 1
+stringset.o: stringset.cc auxlib.h stringset.h
+@
+
+
+1.6
+log
+@-
+@
+text
+@d1 4
+a4 4
+# Makefile.deps created Fri Sep 20 12:38:19 PDT 2013 by gmake
+astree.o: astree.cc astree.h auxlib.h stringset.h lyutils.h yyparse.h
+emit.o: emit.cc astree.h auxlib.h emit.h lyutils.h yyparse.h
+lyutils.o: lyutils.cc lyutils.h astree.h auxlib.h yyparse.h
+d7 3
+a9 3
+main.o: main.cc astree.h auxlib.h emit.h lyutils.h yyparse.h
+yylex.o: yylex.cc auxlib.h lyutils.h astree.h yyparse.h
+yyparse.o: yyparse.cc lyutils.h astree.h auxlib.h yyparse.h
+@
+
+
+1.5
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Fri Sep 20 12:26:08 PDT 2013 by gmake
+@
+
+
+1.4
+log
+@-
+@
+text
+@d1 1
+a1 1
+# Makefile.deps created Fri Sep 20 12:23:33 PDT 2013 by gmake
+@
+
+
+1.3
+log
+@-
+@
+text
+@d1 2
+a2 1
+# Makefile.deps created Fri Sep 20 12:22:56 PDT 2013 by gmake
+d6 1
+@
+
+
+1.2
+log
+@-
+@
+text
+@d1 1
+a1 2
+# Makefile.deps created Thu Sep 19 19:50:44 PDT 2013 by make
+astree.o: astree.cc astree.h auxlib.h stringset.h lyutils.h yyparse.h
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 2
+a2 2
+# Makefile.deps created Thu Sep 19 16:38:25 PDT 2013 by gmake
+astree.o: astree.cc astree.h auxlib.h lyutils.h yyparse.h
+@

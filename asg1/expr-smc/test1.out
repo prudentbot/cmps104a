@@ -1,0 +1,19 @@
+;    1: # 1 "test1.in";# 1 "test1.in"
+;    0: 
+;    1: # 1 "<built-in>";# 1 "<built-in>"
+;    0: 
+;    1: # 1 "<command-line>";# 1 "<command-line>"
+;    0: 
+;    1: # 1 "test1.in";# 1 "test1.in"
+;    0: 
+;    1: 
+;    2: a=b*c+d*e;
+
+          pushvar   b                   ; test1.in 2.2
+          pushvar   c                   ; test1.in 2.4
+          mul                           ; test1.in 2.3
+          pushvar   d                   ; test1.in 2.6
+          pushvar   e                   ; test1.in 2.8
+          mul                           ; test1.in 2.7
+          add                           ; test1.in 2.5
+          popvar    a                   ; test1.in 2.0

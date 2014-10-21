@@ -1,0 +1,27 @@
+head	1.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.1
+date	2013.09.19.23.38.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@ t// $Id: test4.in,v 1.4 2012-10-11 19:07:58-07 - - $
+#include "test4a.inh"
+#include "test4b.inh"
+3*4;
+@

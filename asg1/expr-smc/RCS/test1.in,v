@@ -1,0 +1,25 @@
+head	1.1;
+access;
+symbols;
+locks;
+comment	@# @;
+
+
+1.1
+date	2013.09.19.23.38.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.1
+log
+@-
+@
+text
+@// $Id: test1.in,v 1.2 2011-08-31 17:54:03-07 - - $
+a=b*c+d*e;
+@

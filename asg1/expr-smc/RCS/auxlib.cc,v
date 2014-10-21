@@ -1,0 +1,237 @@
+head	1.3;
+access;
+symbols;
+locks;
+comment	@// @;
+
+
+1.3
+date	2013.09.21.00.52.13;	author -;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2013.09.20.02.55.32;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2013.09.19.23.38.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.3
+log
+@-
+@
+text
+@
+#include <assert.h>
+#include <errno.h>
+#include <libgen.h>
+#include <limits.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <wait.h>
+
+#include "auxlib.h"
+
+static int exitstatus = EXIT_SUCCESS;
+static const char* execname = NULL;
+static const char* debugflags = "";
+static bool alldebugflags = false;
+
+void set_execname (char* argv0) {
+   execname = basename (argv0);
+}
+
+const char* get_execname (void) {
+   assert (execname != NULL);
+   return execname;
+}
+
+static void eprint_signal (const char* kind, int signal) {
+   eprintf (", %s %d", kind, signal);
+   const char* sigstr = strsignal (signal);
+   if (sigstr != NULL) fprintf (stderr, " %s", sigstr);
+}
+
+void eprint_status (const char* command, int status) {
+   if (status == 0) return; 
+   eprintf ("%s: status 0x%04X", command, status);
+   if (WIFEXITED (status)) {
+      eprintf (", exit %d", WEXITSTATUS (status));
+   }
+   if (WIFSIGNALED (status)) {
+      eprint_signal ("Terminated", WTERMSIG (status));
+      #ifdef WCOREDUMP
+      if (WCOREDUMP (status)) eprintf (", core dumped");
+      #endif
+   }
+   if (WIFSTOPPED (status)) {
+      eprint_signal ("Stopped", WSTOPSIG (status));
+   }
+   if (WIFCONTINUED (status)) {
+      eprintf (", Continued");
+   }
+   eprintf ("\n");
+}
+
+int get_exitstatus (void) {
+   return exitstatus;
+}
+
+
+void veprintf (const char* format, va_list args) {
+   assert (execname != NULL);
+   assert (format != NULL);
+   fflush (NULL);
+   if (strstr (format, "%:") == format) {
+      fprintf (stderr, "%s: ", get_execname ());
+      format += 2;
+   }
+   vfprintf (stderr, format, args);
+   fflush (NULL);
+}
+
+void eprintf (const char* format, ...) {
+   va_list args;
+   va_start (args, format);
+   veprintf (format, args);
+   va_end (args);
+}
+
+void errprintf (const char* format, ...) {
+   va_list args;
+   va_start (args, format);
+   veprintf (format, args);
+   va_end (args);
+   exitstatus = EXIT_FAILURE;
+}
+
+void syserrprintf (const char* object) {
+   errprintf ("%:%s: %s\n", object, strerror (errno));
+}
+
+void set_exitstatus (int newexitstatus) {
+   if (exitstatus < newexitstatus) exitstatus = newexitstatus;
+   DEBUGF ('x', "exitstatus = %d\n", exitstatus);
+}
+
+void __stubprintf (const char* file, int line, const char* func,
+                   const char* format, ...) {
+   va_list args;
+   fflush (NULL);
+   printf ("%s: %s[%d] %s: ", execname, file, line, func);
+   va_start (args, format);
+   vprintf (format, args);
+   va_end (args);
+   fflush (NULL);
+}     
+
+
+void set_debugflags (const char* flags) {
+   debugflags = flags;
+   if (strchr (debugflags, '@@') != NULL) alldebugflags = true;
+   DEBUGF ('x', "Debugflags = \"%s\", all = %d\n",
+           debugflags, alldebugflags);
+}
+
+bool is_debugflag (char flag) {
+   return alldebugflags or strchr (debugflags, flag) != NULL;
+}
+
+void __debugprintf (char flag, const char* file, int line,
+                    const char* func, const char* format, ...) {
+   va_list args;
+   if (not is_debugflag (flag)) return;
+   fflush (NULL);
+   va_start (args, format);
+   fprintf (stderr, "DEBUGF(%c): %s[%d] %s():\n",
+             flag, file, line, func);
+   vfprintf (stderr, format, args);
+   va_end (args);
+   fflush (NULL);
+}
+
+RCSC("$Id: auxlib.cc,v 1.2 2013-09-19 19:55:32-07 - - $")
+
+@
+
+
+1.2
+log
+@-
+@
+text
+@a91 1
+   newexitstatus &= 0xFF;
+d116 1
+a116 1
+   return alldebugflags || strchr (debugflags, flag) != NULL;
+d122 1
+a122 1
+   if (! is_debugflag (flag)) return;
+d132 1
+a132 1
+RCSC("$Id: auxlib.cc,v 1.1 2013-09-19 16:38:25-07 - - $")
+@
+
+
+1.1
+log
+@-
+@
+text
+@a1 2
+#define __USE_GNU
+
+a6 1
+#include <stdbool.h>
+d15 2
+a16 2
+static char* execname = NULL;
+static char* debugflags = "";
+d23 1
+a23 1
+char* get_execname (void) {
+d28 1
+a28 1
+static void eprint_signal (char* kind, int signal) {
+d30 1
+a30 1
+   char* sigstr = strsignal (signal);
+d34 1
+a34 1
+void eprint_status (char* command, int status) {
+d60 1
+a60 1
+void veprintf (char* format, va_list args) {
+d72 1
+a72 1
+void eprintf (char* format, ...) {
+d79 1
+a79 1
+void errprintf (char* format, ...) {
+d87 1
+a87 1
+void syserrprintf (char* object) {
+d97 2
+a98 2
+void __stubprintf (char* file, int line, const char* func,
+                   char* format, ...) {
+d120 2
+a121 2
+void __debugprintf (char flag, char* file, int line, const char* func,
+                    char* format, ...) {
+d133 1
+a133 1
+RCSC("$Id: auxlib.c,v 1.16 2013-08-22 13:59:59-07 - - $")
+@

@@ -1,0 +1,57 @@
+head	1.2;
+access;
+symbols;
+locks;
+comment	@ * @;
+
+
+1.2
+date	2014.10.04.01.47.35;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2013.09.21.02.45.47;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.2
+log
+@-
+@
+text
+@// $Id: stringset.h,v 1.1 2013-09-20 19:45:47-07 - - $
+
+#ifndef __STRINGSET__
+#define __STRINGSET__
+
+#include <string>
+#include <unordered_set>
+using namespace std;
+
+#include <stdio.h>
+
+const string* intern_stringset (const char*);
+
+void dump_stringset (FILE*);
+
+#endif
+
+@
+
+
+1.1
+log
+@-
+@
+text
+@d1 1
+a1 1
+// $Id: stringset.h,v 1.1 2013-09-20 19:45:11-07 - - $
+d17 1
+@
