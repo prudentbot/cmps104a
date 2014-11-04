@@ -17,6 +17,7 @@ using namespace std;
 #include "auxlib.h"
 #include "lyutils.h"
 #include "astree.h"
+#include "yyparse.h"
 
 const string cpp_name = "/usr/bin/cpp";
 string yyin_cpp_command;
@@ -107,34 +108,37 @@ int main (int argc, char** argv) {
    //tokenize output (yyin)
 
    if (yyin != NULL) {
-      int linenr = 1;
-      char inputname[1024];
-      strcpy(inputname, filename);
-      char test[1024];
-      strcpy(test,filename);
-      for (;;) {
-         char buffer[1024];
-         char* fgets_rc = fgets(buffer, 1024, yyin);
-         if (fgets_rc == NULL) break;
-         chomp (buffer, '\n');
-         int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
-                        &linenr, test);
-         if (sscanf_rc == 2) {
-            //printf ("DIRECTIVE: line %d file \"%s\"\n", linenr, filename);
-            continue;
-         }
-         char* savepos = NULL;
-         char* bufptr = buffer;
-         for (int tokenct = 1;; ++tokenct) {
-            char* token = strtok_r (bufptr, " \t\n", &savepos);
-            bufptr = NULL;
-            if (token == NULL) break;
-            const string* str = intern_stringset (token);
-            DEBUGF ('m',"intern (\"%s\") returned %p->\"%s\"\n",
-              token, str, str->c_str());
+      // int linenr = 1;
+      // char inputname[1024];
+      // strcpy(inputname, filename);
+      // char test[1024];
+      //strcpy(test,filename);
+      while (yytext != NULL) {
+         yylex();
+         printf("%s\n", yytext);
+         //char buffer[1024];
+         //char* fgets_rc = fgets(buffer, 1024, yyin);
+         //if (fgets_rc == NULL) break;
+         //chomp (buffer, '\n');
+         // int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
+         //                &linenr, test);
+         // if (sscanf_rc == 2) {
+         //    //printf ("DIRECTIVE: line %d file \"%s\"\n", linenr, filename);
+         //    continue;
+         // }
+         // char* savepos = NULL;
+         // char* bufptr = buffer;
+         // for (int tokenct = 1;; ++tokenct) {
+         //    char* token = strtok_r (bufptr, " \t\n", &savepos);
+         //    bufptr = NULL;
+         //    if (token == NULL) break;
+         //    const string* str = intern_stringset (token);
+         //    DEBUGF ('m',"intern (\"%s\") returned %p->\"%s\"\n",
+         //      token, str, str->c_str());
             
-            //printf("token %d: [%s]\n",tokenct, token);
-         }
+         //    //printf("token %d: [%s]\n",tokenct, token);
+         // }
+
       }
    }
 
