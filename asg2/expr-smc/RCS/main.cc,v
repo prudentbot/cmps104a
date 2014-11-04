@@ -1,0 +1,194 @@
+head	1.4;
+access;
+symbols;
+locks;
+comment	@// @;
+
+
+1.4
+date	2013.09.21.00.52.13;	author -;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2013.09.20.19.38.19;	author -;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2013.09.20.02.55.32;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2013.09.19.23.38.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.4
+log
+@-
+@
+text
+@
+#include <string>
+#include <vector>
+using namespace std;
+
+#include <assert.h>
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+
+#include "astree.h"
+#include "auxlib.h"
+#include "emit.h"
+#include "lyutils.h"
+#include "stringset.h"
+
+const string cpp_name = "/usr/bin/cpp";
+string yyin_cpp_command;
+
+// Open a pipe from the C preprocessor.
+// Exit failure if can't.
+// Assignes opened pipe to FILE* yyin.
+void yyin_cpp_popen (const char* filename) {
+   yyin_cpp_command = cpp_name;
+   yyin_cpp_command += " ";
+   yyin_cpp_command += filename;
+   yyin = popen (yyin_cpp_command.c_str(), "r");
+   if (yyin == NULL) {
+      syserrprintf (yyin_cpp_command.c_str());
+      exit (get_exitstatus());
+   }
+}
+
+void yyin_cpp_pclose (void) {
+   int pclose_rc = pclose (yyin);
+   eprint_status (yyin_cpp_command.c_str(), pclose_rc);
+   if (pclose_rc != 0) set_exitstatus (EXIT_FAILURE);
+}
+
+bool want_echo () {
+   return not (isatty (fileno (stdin)) and isatty (fileno (stdout)));
+}
+
+
+void scan_opts (int argc, char** argv) {
+   int option;
+   opterr = 0;
+   yy_flex_debug = 0;
+   yydebug = 0;
+   for(;;) {
+      option = getopt (argc, argv, "@@:ely");
+      if (option == EOF) break;
+      switch (option) {
+         case '@@': set_debugflags (optarg);   break;
+         case 'l': yy_flex_debug = 1;         break;
+         case 'y': yydebug = 1;               break;
+         default:  errprintf ("%:bad option (%c)\n", optopt); break;
+      }
+   }
+   if (optind > argc) {
+      errprintf ("Usage: %s [-ly] [filename]\n", get_execname());
+      exit (get_exitstatus());
+   }
+   const char* filename = optind == argc ? "-" : argv[optind];
+   yyin_cpp_popen (filename);
+   DEBUGF ('m', "filename = %s, yyin = %p, fileno (yyin) = %d\n",
+           filename, yyin, fileno (yyin));
+   scanner_newfilename (filename);
+}
+
+int main (int argc, char** argv) {
+   int parsecode = 0;
+   set_execname (argv[0]);
+   DEBUGSTMT ('m',
+      for (int argi = 0; argi < argc; ++argi) {
+         eprintf ("%s%c", argv[argi], argi < argc - 1 ? ' ' : '\n');
+      }
+   );
+   scan_opts (argc, argv);
+   scanner_setecho (want_echo());
+   parsecode = yyparse();
+   if (parsecode) {
+      errprintf ("%:parse failed (%d)\n", parsecode);
+   }else {
+      DEBUGSTMT ('a', dump_astree (stderr, yyparse_astree); );
+      emit_sm_code (yyparse_astree);
+   }
+   free_ast (yyparse_astree);
+   yyin_cpp_pclose();
+   DEBUGSTMT ('s', dump_stringset (stderr); );
+   yylex_destroy();
+   return get_exitstatus();
+}
+
+RCSC("$Id: main.cc,v 1.3 2013-09-20 12:38:19-07 - - $")
+
+@
+
+
+1.3
+log
+@-
+@
+text
+@d14 1
+d17 1
+a17 1
+#include "auxlib.h"
+d92 2
+d97 1
+a97 1
+RCSC("$Id: main.cc,v 1.2 2013-09-19 19:55:32-07 - - $")
+@
+
+
+1.2
+log
+@-
+@
+text
+@a20 5
+struct options{
+   bool dumptree;
+   bool echoinput;
+};
+
+d41 4
+d46 1
+a46 1
+void scan_opts (int argc, char** argv, struct options* options) {
+a55 1
+         case 'e': options->echoinput = true; break;
+a72 1
+   struct options options = {false, false};
+d80 2
+a81 2
+   scan_opts (argc, argv, &options);
+   scanner_setecho (options.echoinput);
+d94 1
+a94 1
+RCSC("$Id: main.cc,v 1.1 2013-09-19 16:38:25-07 - - $")
+@
+
+
+1.1
+log
+@-
+@
+text
+@a7 1
+#include <stdbool.h>
+d97 1
+a97 1
+RCSC("$Id: main.c,v 1.17 2013-08-22 13:58:43-07 - - $")
+@

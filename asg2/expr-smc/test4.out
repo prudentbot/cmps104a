@@ -1,0 +1,37 @@
+;    1: # 1 "test4.in";# 1 "test4.in"
+;    0: 
+;    1: # 1 "<built-in>";# 1 "<built-in>"
+;    0: 
+;    1: # 1 "<command-line>";# 1 "<command-line>"
+;    0: 
+;    1: # 1 "test4.in";# 1 "test4.in"
+;    0: 
+;    1:  t
+;    2: # 1 "test4a.inh" 1;# 1 "test4a.inh"
+;    0: 
+;    1: 
+;    2: 
+;    3: pi=3.141592653589793238462643383280;
+;    4: pi;
+;    5: # 3 "test4.in" 2;# 3 "test4.in"
+;    2: 
+;    3: # 1 "test4b.inh" 1;# 1 "test4b.inh"
+;    0: 
+;    1: 
+;    2: a=pi*r^2;
+;    3: 3.141592653589793238462643383280;
+;    4: # 4 "test4.in" 2;# 4 "test4.in"
+;    3: 
+;    4: 3*4;
+
+          pushvar   pi                  ; test4a.inh 4.0
+          pushvar   pi                  ; test4b.inh 2.2
+          pushvar   r                   ; test4b.inh 2.5
+          pushnum   2                   ; test4b.inh 2.7
+          pow                           ; test4b.inh 2.6
+          mul                           ; test4b.inh 2.4
+          popvar    a                   ; test4b.inh 2.0
+          pushnum   3.141592653589793238462643383280; test4b.inh 3.0
+          pushnum   3                   ; test4.in 4.0
+          pushnum   4                   ; test4.in 4.2
+          mul                           ; test4.in 4.1

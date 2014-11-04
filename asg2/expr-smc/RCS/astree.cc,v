@@ -1,0 +1,507 @@
+head	1.14;
+access;
+symbols;
+locks;
+comment	@// @;
+
+
+1.14
+date	2013.10.11.01.48.18;	author -;	state -;
+branches;
+next	1.13;
+
+1.13
+date	2013.10.11.01.44.15;	author -;	state -;
+branches;
+next	1.12;
+
+1.12
+date	2013.10.11.00.44.18;	author -;	state -;
+branches;
+next	1.11;
+
+1.11
+date	2013.09.21.00.52.13;	author -;	state -;
+branches;
+next	1.10;
+
+1.10
+date	2013.09.20.19.23.31;	author -;	state -;
+branches;
+next	1.9;
+
+1.9
+date	2013.09.20.02.55.32;	author -;	state -;
+branches;
+next	1.8;
+
+1.8
+date	2013.09.19.23.38.25;	author -;	state -;
+branches;
+next	1.7;
+
+1.7
+date	2013.09.12.03.05.28;	author -;	state -;
+branches;
+next	1.6;
+
+1.6
+date	2013.09.12.03.04.27;	author -;	state -;
+branches;
+next	1.5;
+
+1.5
+date	2013.09.12.03.03.20;	author -;	state -;
+branches;
+next	1.4;
+
+1.4
+date	2013.09.12.03.02.33;	author -;	state -;
+branches;
+next	1.3;
+
+1.3
+date	2013.09.12.02.59.46;	author -;	state -;
+branches;
+next	1.2;
+
+1.2
+date	2013.09.12.02.52.43;	author -;	state -;
+branches;
+next	1.1;
+
+1.1
+date	2013.09.12.02.52.25;	author -;	state -;
+branches;
+next	;
+
+
+desc
+@@
+
+
+1.14
+log
+@-
+@
+text
+@
+#include <assert.h>
+#include <inttypes.h>
+#include <stdarg.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#include "astree.h"
+#include "stringset.h"
+#include "lyutils.h"
+
+astree* new_astree (int symbol, int filenr, int linenr, int offset,
+                    const char* lexinfo) {
+   astree* tree = new astree();
+   tree->symbol = symbol;
+   tree->filenr = filenr;
+   tree->linenr = linenr;
+   tree->offset = offset;
+   tree->lexinfo = intern_stringset (lexinfo);
+   DEBUGF ('f', "astree %p->{%d:%d.%d: %s: \"%s\"}\n",
+           tree, tree->filenr, tree->linenr, tree->offset,
+           get_yytname (tree->symbol), tree->lexinfo->c_str());
+   return tree;
+}
+
+
+astree* adopt1 (astree* root, astree* child) {
+   root->children.push_back (child);
+   DEBUGF ('a', "%p (%s) adopting %p (%s)\n",
+           root, root->lexinfo->c_str(),
+           child, child->lexinfo->c_str());
+   return root;
+}
+
+astree* adopt2 (astree* root, astree* left, astree* right) {
+   adopt1 (root, left);
+   adopt1 (root, right);
+   return root;
+}
+
+astree* adopt1sym (astree* root, astree* child, int symbol) {
+   root = adopt1 (root, child);
+   root->symbol = symbol;
+   return root;
+}
+
+
+static void dump_node (FILE* outfile, astree* node) {
+   fprintf (outfile, "%p->{%s(%d) %ld:%ld.%03ld \"%s\" [",
+            node, get_yytname (node->symbol), node->symbol,
+            node->filenr, node->linenr, node->offset,
+            node->lexinfo->c_str());
+   bool need_space = false;
+   for (size_t child = 0; child < node->children.size(); ++child) {
+      if (need_space) fprintf (outfile, " ");
+      need_space = true;
+      fprintf (outfile, "%p", node->children.at(child));
+   }
+   fprintf (outfile, "]}");
+}
+
+static void dump_astree_rec (FILE* outfile, astree* root, int depth) {
+   if (root == NULL) return;
+   fprintf (outfile, "%*s%s ", depth * 3, "", root->lexinfo->c_str());
+   dump_node (outfile, root);
+   fprintf (outfile, "\n");
+   for (size_t child = 0; child < root->children.size(); ++child) {
+      dump_astree_rec (outfile, root->children[child], depth + 1);
+   }
+}
+
+void dump_astree (FILE* outfile, astree* root) {
+   dump_astree_rec (outfile, root, 0);
+   fflush (NULL);
+}
+
+void yyprint (FILE* outfile, unsigned short toknum, astree* yyvaluep) {
+   DEBUGF ('f', "toknum = %d, yyvaluep = %p\n", toknum, yyvaluep);
+   if (is_defined_token (toknum)) {
+      dump_node (outfile, yyvaluep);
+   }else {
+      fprintf (outfile, "%s(%d)\n", get_yytname (toknum), toknum);
+   }
+   fflush (NULL);
+}
+
+
+void free_ast (astree* root) {
+   while (not root->children.empty()) {
+      astree* child = root->children.back();
+      root->children.pop_back();
+      free_ast (child);
+   }
+   DEBUGF ('f', "free [%X]-> %d:%d.%d: %s: \"%s\")\n",
+           (uintptr_t) root, root->filenr, root->linenr, root->offset,
+           get_yytname (root->symbol), root->lexinfo->c_str());
+   delete root;
+}
+
+void free_ast2 (astree* tree1, astree* tree2) {
+   free_ast (tree1);
+   free_ast (tree2);
+}
+
+RCSC("$Id: astree.cc,v 1.13 2013-10-10 18:44:15-07 - - $")
+
+@
+
+
+1.13
+log
+@-
+@
+text
+@d88 1
+d106 1
+a106 1
+RCSC("$Id: astree.cc,v 1.12 2013-10-10 17:44:18-07 - - $")
+@
+
+
+1.12
+log
+@-
+@
+text
+@d79 1
+d105 1
+a105 1
+RCSC("$Id: astree.cc,v 1.11 2013-09-20 17:52:13-07 - - $")
+@
+
+
+1.11
+log
+@-
+@
+text
+@d21 1
+a21 2
+   DEBUGF ('f', "HELLO");
+   DEBUGF ('f', "astree %p-> %d:%d.%d: %s: \"%s\"\n",
+d49 2
+a50 2
+static void dump_node (FILE* outfile, astree* node, int depth) {
+   fprintf (outfile, "%p-> astree {%s(%d), %ld:%ld.%03ld, \"%s\",\n",
+d54 1
+a54 1
+   fprintf (outfile, "%*schildren:", depth * 3 + 6, "");
+d56 3
+a58 1
+      fprintf (outfile, " %p", node->children.at(child));
+d60 1
+d66 1
+a66 1
+   dump_node (outfile, root, depth);
+d79 5
+a83 3
+   fprintf (outfile, "%d=%s)\n%*s(",
+            toknum, get_yytname (toknum), 9, "");
+   if (is_defined_token (toknum)) dump_node (outfile, yyvaluep, 3);
+d104 1
+a104 1
+RCSC("$Id: astree.cc,v 1.10 2013-09-20 12:23:31-07 - - $")
+@
+
+
+1.10
+log
+@-
+@
+text
+@a12 2
+stringset* lexical_table = new_stringset();
+
+d20 1
+a20 1
+   tree->lexinfo = intern_stringset (lexical_table, lexinfo);
+d52 3
+a54 3
+             (void*) node, get_yytname (node->symbol), node->symbol,
+             node->filenr, node->linenr, node->offset,
+             node->lexinfo->c_str());
+d78 2
+a79 2
+             toknum, get_yytname (toknum), 9, "");
+   dump_node (outfile, yyvaluep, 3);
+d100 1
+a100 1
+RCSC("$Id: astree.cc,v 1.9 2013-09-19 19:55:32-07 - - $")
+@
+
+
+1.9
+log
+@-
+@
+text
+@d13 1
+a13 1
+stringset* stringset = new_stringset();
+d22 1
+a22 1
+   tree->lexinfo = intern_stringset (stringset, lexinfo);
+d102 1
+a102 1
+RCSC("$Id: astree.cc,v 1.8 2013-09-19 16:38:25-07 - - $")
+@
+
+
+1.8
+log
+@-
+@
+text
+@d10 1
+d13 2
+d16 1
+a16 1
+                    const string& lexinfo) {
+d22 1
+a22 1
+   tree->lexinfo = lexinfo;
+d26 1
+a26 1
+           get_yytname (tree->symbol), tree->lexinfo.c_str());
+d34 2
+a35 2
+           root, root->lexinfo.c_str(),
+           child, child->lexinfo.c_str());
+d53 1
+a53 1
+   fprintf (outfile, "%p-> astree {%s(%d), %d:%d.%03d, \"%s\",\n",
+d56 1
+a56 1
+             node->lexinfo.c_str());
+d65 1
+a65 1
+   fprintf (outfile, "%*s%s ", depth * 3, "", root->lexinfo.c_str());
+d93 1
+a93 1
+           get_yytname (root->symbol), root->lexinfo.c_str());
+d102 1
+a102 1
+RCSC("$Id: astree.cc,v 1.6 2013-09-11 20:04:27-07 - - $")
+@
+
+
+1.7
+log
+@-
+@
+text
+@d12 2
+a13 2
+astree new_astree (int symbol, int filenr, int linenr, int offset,
+                   const string& lexinfo) {
+d20 1
+d28 1
+a28 1
+astree adopt1 (astree* root, astree* child) {
+d31 2
+a32 2
+           root, root->lexinfo,
+           child, child->lexinfo);
+d36 1
+a36 1
+astree adopt2 (astree* root, astree* left, astree* right) {
+d42 1
+a42 1
+astree adopt1sym (astree* root, astree* child, int symbol) {
+d54 4
+a57 3
+   fprintf (outfile, "%*sfirst=%p, last=%p, next=%p}",
+             depth * 3 + 12, "", (void*) node->first,
+             (void*) node->last, (void*) node->next);
+d62 1
+a62 1
+   fprintf (outfile, "%*s%s ", depth * 3, "", root->lexinfo);
+d90 1
+a90 1
+            get_yytname (root->symbol), root->lexinfo.c_str());
+@
+
+
+1.6
+log
+@-
+@
+text
+@d27 1
+a27 1
+astree adopt1 (astree* root, astree child) {
+d97 1
+a97 1
+RCSC("$Id: astree.cc,v 1.5 2013-09-11 20:03:20-07 - - $")
+@
+
+
+1.5
+log
+@-
+@
+text
+@d49 1
+a49 1
+   fprintf (outfile, "%p-> astree {%s(%d), %d:%d.%03d, %p->\"%s\",\n",
+d52 1
+a52 1
+             node->lexinfo, node->lexinfo);
+d92 1
+a92 1
+void free_ast2 (astree* tree1, astree* tree2)C {
+d97 1
+a97 1
+RCSC("$Id: astree.cc,v 1.4 2013-09-11 20:02:33-07 - - $")
+@
+
+
+1.4
+log
+@-
+@
+text
+@a58 1
+   astree* child = NULL;
+d86 1
+a86 1
+   DEBUGF ('f', "free [%X]-> %d:%d.%d: %s: %p->\"%s\")\n",
+d88 1
+a88 1
+            get_yytname (root->symbol), root->lexinfo, root->lexinfo);
+d97 1
+a97 1
+RCSC("$Id: astree.cc,v 1.3 2013-09-11 19:59:46-07 - - $")
+@
+
+
+1.3
+log
+@-
+@
+text
+@d64 2
+a65 2
+   for (child = root->first; child != NULL; child = child->next) {
+      dump_astree_rec (outfile, child, depth + 1);
+d98 1
+a98 1
+RCSC("$Id: astree.cc,v 1.2 2013-09-11 19:52:43-07 - - $")
+@
+
+
+1.2
+log
+@-
+@
+text
+@d13 2
+a14 2
+                   const string &lexinfo) {
+   astree *tree = new astree();
+d20 1
+a20 1
+   DEBUGF ('f', "astree %p-> %d:%d.%d: %s: %p->\"%s\"\n",
+d22 1
+a22 1
+           get_yytname (tree->symbol), tree->lexinfo, tree->lexinfo);
+d27 1
+a27 1
+astree adopt1 (astree root, astree child) {
+d35 1
+a35 1
+astree adopt2 (astree root, astree left, astree right) {
+d41 1
+a41 1
+astree adopt1sym (astree root, astree child, int symbol) {
+d48 1
+a48 1
+static void dump_node (FILE *outfile, astree node, int depth) {
+d58 2
+a59 2
+static void dump_astree_rec (FILE *outfile, astree root, int depth) {
+   astree child = NULL;
+d69 1
+a69 1
+void dump_astree (FILE *outfile, astree root) {
+d74 1
+a74 1
+void yyprint (FILE *outfile, unsigned short toknum, astree yyvaluep) {
+d81 1
+a81 3
+void free_ast (astree root) {
+   astree child = NULL;
+   if (root == NULL) return;
+d83 1
+a83 1
+      astree child = root->children.back();
+d93 1
+a93 1
+void free_ast2 (astree tree1, astree tree2)C {
+d98 1
+a98 1
+RCSC("$Id: astree.cc,v 1.1 2013-09-11 19:52:25-07 - - $")
+@
+
+
+1.1
+log
+@-
+@
+text
+@d14 1
+a14 1
+   astree tree = new astree();
+d100 1
+a100 1
+RCSC("$Id: astree.c,v 1.12 2013-08-22 13:58:43-07 - - $")
+@

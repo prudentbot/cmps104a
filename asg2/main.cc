@@ -1,4 +1,5 @@
 //main.cc
+//jshedel@ucsc.edu
 
 #include <string>
 #include <vector>
@@ -14,11 +15,12 @@ using namespace std;
 
 #include "stringset.h"
 #include "auxlib.h"
+#include "lyutils.h"
+#include "astree.h"
 
 const string cpp_name = "/usr/bin/cpp";
-string str_cpp_command;
+string yyin_cpp_command;
 string cpp_options;
-FILE* str_in;
 int cpp_opt;
 const char* filename;
 
@@ -26,25 +28,25 @@ const char* filename;
 // Exit failure if can't.
 // Assignes opened pipe to FILE* yyin.
 
-void str_cpp_popen (const char* filename) {
-   str_cpp_command = cpp_name;
-   str_cpp_command += " ";
+void yyin_cpp_popen (const char* filename) {
+   yyin_cpp_command = cpp_name;
+   yyin_cpp_command += " ";
    if (cpp_opt == 1) {
-      str_cpp_command += "-D";
-      str_cpp_command += cpp_options;
-      str_cpp_command += " ";
+      yyin_cpp_command += "-D";
+      yyin_cpp_command += cpp_options;
+      yyin_cpp_command += " ";
    }
-   str_cpp_command += filename;
-   str_in = popen (str_cpp_command.c_str(), "r");
-   if (str_in == NULL) {
-      syserrprintf (str_cpp_command.c_str());
+   yyin_cpp_command += filename;
+   yyin = popen (yyin_cpp_command.c_str(), "r");
+   if (yyin == NULL) {
+      syserrprintf (yyin_cpp_command.c_str());
       exit (get_exitstatus());
    }
 }
 
-void str_cpp_pclose (void) {
-   int pclose_rc = pclose (str_in);
-   eprint_status (str_cpp_command.c_str(), pclose_rc);
+void yyin_cpp_pclose (void) {
+   int pclose_rc = pclose (yyin);
+   eprint_status (yyin_cpp_command.c_str(), pclose_rc);
    if (pclose_rc != 0) set_exitstatus (EXIT_FAILURE);
 }
 
@@ -81,9 +83,9 @@ void scan_opts (int argc, char** argv) {
    }
    filename = optind == argc ? "-" : argv[optind];
    //cout << "opening " << filename << " with options " << cpp_options << endl;
-   str_cpp_popen (filename);
-   DEBUGF ('m', "filename = %s, str_in = %p, fileno (str_in) = %d\n",
-           filename, str_in, fileno (str_in));
+   yyin_cpp_popen (filename);
+   DEBUGF ('m', "filename = %s, yyin = %p, fileno (yyin) = %d\n",
+           filename, yyin, fileno (yyin));
    //scanner_newfilename (filename);
 
    yydebug = yydebug;
@@ -102,9 +104,9 @@ int main (int argc, char** argv) {
 
    scan_opts (argc, argv);
 
-   //tokenize output (str_in)
+   //tokenize output (yyin)
 
-   if (str_in != NULL) {
+   if (yyin != NULL) {
       int linenr = 1;
       char inputname[1024];
       strcpy(inputname, filename);
@@ -112,7 +114,7 @@ int main (int argc, char** argv) {
       strcpy(test,filename);
       for (;;) {
          char buffer[1024];
-         char* fgets_rc = fgets(buffer, 1024, str_in);
+         char* fgets_rc = fgets(buffer, 1024, yyin);
          if (fgets_rc == NULL) break;
          chomp (buffer, '\n');
          int sscanf_rc = sscanf (buffer, "# %d \"%[^\"]\"",
