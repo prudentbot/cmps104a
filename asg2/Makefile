@@ -19,7 +19,7 @@ HYGEN     = yyparse.h
 CYGEN     = yyparse.cc
 CGENS     = ${CLGEN} ${CYGEN}
 ALLGENS   = ${HYGEN} ${CGENS}
-EXECBIN   = zexprsm
+EXECBIN   = oc
 ALLCSRC   = ${CSOURCES} ${CGENS}
 OBJECTS   = ${ALLCSRC:.cc=.o}
 LREPORT   = yylex.output
@@ -47,7 +47,7 @@ all : ${EXECBIN}
 #
 ${EXECBIN} : ${OBJECTS}
 	${GCC} -o${EXECBIN} ${OBJECTS}
-	ident ${OBJECTS} ${EXECBIN} >${IREPORT}
+	#ident ${OBJECTS} ${EXECBIN} >${IREPORT}
 
 #
 # Build an object file form a C source file.
@@ -119,6 +119,9 @@ ${DEPSFILE} :
 #	( ${VALGRIND} ${EXECBIN} -ly -@@ $< \
 #	;  echo EXIT STATUS $$? 1>&2 \
 #	) 1>$*.out 2>$*.err
+
+smalltests: ${EXECBIN}
+	./${EXECBIN} 01-hello.oc 2> debug.err
 
 #
 # Everything

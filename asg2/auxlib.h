@@ -3,6 +3,9 @@
 
 #include <stdarg.h>
 
+static const char* asg1name = NULL;
+static const char* asg2name = NULL;
+
 //
 // DESCRIPTION
 //    Auxiliary library containing miscellaneous useful things.
@@ -10,8 +13,6 @@
 
 //
 // Error message and exit status utility.
-//
-
 void set_execname (char* argv0);
    //
    // Sets the program name for use by auxlib messages.

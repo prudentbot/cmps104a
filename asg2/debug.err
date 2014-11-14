@@ -1,12 +1,14 @@
-started
 --(end of buffer or a NUL)
 --accepting rule at line 36 ("# 1 "01-hello.oc"")
 --accepting rule at line 38 ("
 ")
---accepting rule at line 36 ("# 1 "<built-in>"")
+--accepting rule at line 36 ("# 1 "<command-line>"")
 --accepting rule at line 38 ("
 ")
---accepting rule at line 36 ("# 1 "<command-line>"")
+--accepting rule at line 36 ("# 1 "/usr/include/stdc-predef.h" 1 3 4")
+--accepting rule at line 38 ("
+")
+--accepting rule at line 36 ("# 1 "<command-line>" 2")
 --accepting rule at line 38 ("
 ")
 --accepting rule at line 36 ("# 1 "01-hello.oc"")

@@ -85,7 +85,16 @@ void yyprint (FILE* outfile, unsigned short toknum, astree* yyvaluep) {
    fflush (NULL);
 }
 
-
+void asg2print (FILE* outfile, astree* yyvaluep){
+   if (is_defined_token (yyvaluep->symbol)) {
+      fprintf (outfile, "%3lu %2lu.%.3lu %3d %-10s (%s)\n", yyvaluep->filenr, yyvaluep->linenr,
+        yyvaluep->offset, yyvaluep->symbol, get_yytname (yyvaluep->symbol), yytext);
+   }else {
+      fprintf (outfile, "%s(%d)\n", get_yytname (toknum), toknum);
+   }
+   fflush (NULL);
+}
+
 void free_ast (astree* root) {
    while (not root->children.empty()) {
       astree* child = root->children.back();
