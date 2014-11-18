@@ -17,6 +17,11 @@ int scan_linenr = 1;
 int scan_offset = 0;
 bool scan_echo = false;
 vector<string> included_filenames;
+FILE* tokfile;
+
+void scanner_outputfile(const char* filename) {
+  tokfile = fopen(filename, "w");
+}
 
 const string* scanner_filename (int filenr) {
    return &included_filenames.at(filenr);
@@ -66,7 +71,7 @@ int yylval_token (int symbol) {
    int offset = scan_offset - yyleng;
    yylval = new_astree (symbol, included_filenames.size() - 1,
                         scan_linenr, offset, yytext);
-   asg2print(stdout, yylval);
+   asg2print(tokfile, yylval);
    return symbol;
 }
 
@@ -92,6 +97,7 @@ void scanner_include (void) {
                  scan_rc, yytext);
    }else {
       printf (";# %d \"%s\"\n", linenr, filename);
+      fprintf(tokfile, "# %d \"%s\"\n", linenr, filename);
       scanner_newfilename (filename);
       scan_linenr = linenr - 1;
       DEBUGF ('m', "filename=%s, scan_linenr=%d\n",

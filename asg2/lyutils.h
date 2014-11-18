@@ -25,6 +25,7 @@ int yylex_destroy (void);
 const char* get_yytname (int symbol);
 bool is_defined_token (int symbol);
 
+void scanner_outputfile(const char* filename);
 const string* scanner_filename (int filenr);
 void scanner_newfilename (const char* filename);
 void scanner_badchar (unsigned char bad);

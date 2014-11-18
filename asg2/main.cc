@@ -65,9 +65,9 @@ void chomp (char* string, char delim) {
 void scan_opts (int argc, char** argv) {
    int option;
    opterr = 0;
-   int yy_flex_debug = 0;
-   int yydebug = 0;
    cpp_opt = 0;
+   yy_flex_debug = 0;
+   yydebug = 0;
 
    for(;;) {
       option = getopt (argc, argv, "@:elyD:");
@@ -91,8 +91,6 @@ void scan_opts (int argc, char** argv) {
            filename, yyin, fileno (yyin));
    //scanner_newfilename (filename);
 
-   yydebug = yydebug;
-   yy_flex_debug = yy_flex_debug;
 }
 
 int main (int argc, char** argv) {
@@ -105,18 +103,23 @@ int main (int argc, char** argv) {
 
    scan_opts (argc, argv);
 
-   while(yylex()){      
-   }
-
    //remove directory information, append .str
    char* outfilename = basename( (char*) filename);
    string p = strtok(outfilename, ".");
+   string s = strtok(outfilename, ".");
    p += ".str";
+   s += ".tok";
    //open the output file
    FILE* outfile = fopen(p.c_str(), "w");
-
    //dump stringset to file
    dump_stringset(outfile);
+
+   scanner_outputfile(s.c_str());
+
+   while(yylex()){      
+   }
+
+
 
    return get_exitstatus();
 }

@@ -90,7 +90,8 @@ void asg2print (FILE* outfile, astree* yyvaluep){
       fprintf (outfile, "%3lu %2lu.%.3lu %3d %-10s (%s)\n", yyvaluep->filenr, yyvaluep->linenr,
         yyvaluep->offset, yyvaluep->symbol, get_yytname (yyvaluep->symbol), yytext);
    }else {
-      fprintf (outfile, "%s(%d)\n", get_yytname (toknum), toknum);
+      fprintf (outfile, "%s(%d)\n",get_yytname(yyvaluep->symbol), yyvaluep->symbol);
+      //fprintf(outfile, "# %3lu %s \n", yyvaluep->filenr, yytext); 
    }
    fflush (NULL);
 }

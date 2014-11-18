@@ -3,8 +3,8 @@
 
 #include <stdarg.h>
 
-static const char* asg1name = NULL;
-static const char* asg2name = NULL;
+//static const char* asg1name = NULL;
+//static const char* asg2name = NULL;
 
 //
 // DESCRIPTION
