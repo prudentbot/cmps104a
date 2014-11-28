@@ -1,0 +1,331 @@
+==5540== Memcheck, a memory error detector
+==5540== Copyright (C) 2002-2012, and GNU GPL'd, by Julian Seward et al.
+==5540== Using Valgrind-3.8.1 and LibVEX; rerun with -h for copyright info
+==5540== Command: zexprsm -ly -@@ test1.in
+==5540== 
+DEBUGF(x): auxlib.cc[112] set_debugflags():
+Debugflags = "@", all = 1
+DEBUGF(m): main.cc[69] scan_opts():
+filename = test1.in, yyin = 0x4c2a1d0, fileno (yyin) = 3
+Starting parse
+Entering state 0
+Reducing stack by rule 5 (line 47):
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2a3d0->{0:0.0: ROOT: "<<ROOT>>"}
+-> $$ = nterm stmtseq ()
+Stack now 0
+Entering state 2
+Reading a token: --(end of buffer or a NUL)
+--accepting rule at line 32 ("# 1 "test1.in"")
+DEBUGF(m): lyutils.cc[97] scanner_include():
+filename=test1.in, scan_linenr=0
+--accepting rule at line 34 ("
+")
+--accepting rule at line 32 ("# 1 "<built-in>"")
+DEBUGF(m): lyutils.cc[97] scanner_include():
+filename=<built-in>, scan_linenr=0
+--accepting rule at line 34 ("
+")
+--accepting rule at line 32 ("# 1 "<command-line>"")
+DEBUGF(m): lyutils.cc[97] scanner_include():
+filename=<command-line>, scan_linenr=0
+--accepting rule at line 34 ("
+")
+--accepting rule at line 32 ("# 1 "test1.in"")
+DEBUGF(m): lyutils.cc[97] scanner_include():
+filename=test1.in, scan_linenr=0
+--accepting rule at line 34 ("
+")
+--accepting rule at line 34 ("
+")
+--accepting rule at line 37 ("a")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2e920->{4:2.0: IDENT: "a"}
+Next token is token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2e920
+0x4c2e920->{IDENT(259) 4:2.000 "a" []})
+Shifting token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2e920
+0x4c2e920->{IDENT(259) 4:2.000 "a" []})
+Entering state 5
+Reducing stack by rule 15 (line 59):
+   $1 = token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2e920
+0x4c2e920->{IDENT(259) 4:2.000 "a" []})
+-> $$ = nterm expr ()
+Stack now 0 2
+Entering state 11
+Reading a token: --accepting rule at line 39 ("=")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2ea50->{4:2.1: '=': "="}
+Next token is token '=' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 61, yyvaluep = 0x4c2ea50
+0x4c2ea50->{'='(61) 4:2.001 "=" []})
+Shifting token '=' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 61, yyvaluep = 0x4c2ea50
+0x4c2ea50->{'='(61) 4:2.001 "=" []})
+Entering state 16
+Reading a token: --accepting rule at line 37 ("b")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2eb80->{4:2.2: IDENT: "b"}
+Next token is token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2eb80
+0x4c2eb80->{IDENT(259) 4:2.002 "b" []})
+Shifting token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2eb80
+0x4c2eb80->{IDENT(259) 4:2.002 "b" []})
+Entering state 5
+Reducing stack by rule 15 (line 59):
+   $1 = token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2eb80
+0x4c2eb80->{IDENT(259) 4:2.002 "b" []})
+-> $$ = nterm expr ()
+Stack now 0 2 11 16
+Entering state 24
+Reading a token: --accepting rule at line 42 ("*")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2ecb0->{4:2.3: '*': "*"}
+Next token is token '*' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 42, yyvaluep = 0x4c2ecb0
+0x4c2ecb0->{'*'(42) 4:2.003 "*" []})
+Shifting token '*' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 42, yyvaluep = 0x4c2ecb0
+0x4c2ecb0->{'*'(42) 4:2.003 "*" []})
+Entering state 19
+Reading a token: --accepting rule at line 37 ("c")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2ede0->{4:2.4: IDENT: "c"}
+Next token is token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2ede0
+0x4c2ede0->{IDENT(259) 4:2.004 "c" []})
+Shifting token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2ede0
+0x4c2ede0->{IDENT(259) 4:2.004 "c" []})
+Entering state 5
+Reducing stack by rule 15 (line 59):
+   $1 = token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2ede0
+0x4c2ede0->{IDENT(259) 4:2.004 "c" []})
+-> $$ = nterm expr ()
+Stack now 0 2 11 16 24 19
+Entering state 27
+Reading a token: --accepting rule at line 40 ("+")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2ef10->{4:2.5: '+': "+"}
+Next token is token '+' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 43, yyvaluep = 0x4c2ef10
+0x4c2ef10->{'+'(43) 4:2.005 "+" []})
+Reducing stack by rule 9 (line 53):
+   $1 = nterm expr ()
+   $2 = token '*' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 42, yyvaluep = 0x4c2ecb0
+0x4c2ecb0->{'*'(42) 4:2.003 "*" []})
+   $3 = nterm expr ()
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2ecb0 (*) adopting 0x4c2eb80 (b)
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2ecb0 (*) adopting 0x4c2ede0 (c)
+-> $$ = nterm expr ()
+Stack now 0 2 11 16
+Entering state 24
+Next token is token '+' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 43, yyvaluep = 0x4c2ef10
+0x4c2ef10->{'+'(43) 4:2.005 "+" []})
+Shifting token '+' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 43, yyvaluep = 0x4c2ef10
+0x4c2ef10->{'+'(43) 4:2.005 "+" []})
+Entering state 17
+Reading a token: --accepting rule at line 37 ("d")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2f0e0->{4:2.6: IDENT: "d"}
+Next token is token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2f0e0
+0x4c2f0e0->{IDENT(259) 4:2.006 "d" []})
+Shifting token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2f0e0
+0x4c2f0e0->{IDENT(259) 4:2.006 "d" []})
+Entering state 5
+Reducing stack by rule 15 (line 59):
+   $1 = token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2f0e0
+0x4c2f0e0->{IDENT(259) 4:2.006 "d" []})
+-> $$ = nterm expr ()
+Stack now 0 2 11 16 24 17
+Entering state 25
+Reading a token: --accepting rule at line 42 ("*")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2f210->{4:2.7: '*': "*"}
+Next token is token '*' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 42, yyvaluep = 0x4c2f210
+0x4c2f210->{'*'(42) 4:2.007 "*" []})
+Shifting token '*' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 42, yyvaluep = 0x4c2f210
+0x4c2f210->{'*'(42) 4:2.007 "*" []})
+Entering state 19
+Reading a token: --accepting rule at line 37 ("e")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2f2f0->{4:2.8: IDENT: "e"}
+Next token is token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2f2f0
+0x4c2f2f0->{IDENT(259) 4:2.008 "e" []})
+Shifting token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2f2f0
+0x4c2f2f0->{IDENT(259) 4:2.008 "e" []})
+Entering state 5
+Reducing stack by rule 15 (line 59):
+   $1 = token IDENT (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 259, yyvaluep = 0x4c2f2f0
+0x4c2f2f0->{IDENT(259) 4:2.008 "e" []})
+-> $$ = nterm expr ()
+Stack now 0 2 11 16 24 17 25 19
+Entering state 27
+Reading a token: --accepting rule at line 47 (";")
+DEBUGF(f): astree.cc[23] new_astree():
+astree 0x4c2f420->{4:2.9: ';': ";"}
+Next token is token ';' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 59, yyvaluep = 0x4c2f420
+0x4c2f420->{';'(59) 4:2.009 ";" []})
+Reducing stack by rule 9 (line 53):
+   $1 = nterm expr ()
+   $2 = token '*' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 42, yyvaluep = 0x4c2f210
+0x4c2f210->{'*'(42) 4:2.007 "*" []})
+   $3 = nterm expr ()
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2f210 (*) adopting 0x4c2f0e0 (d)
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2f210 (*) adopting 0x4c2f2f0 (e)
+-> $$ = nterm expr ()
+Stack now 0 2 11 16 24 17
+Entering state 25
+Next token is token ';' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 59, yyvaluep = 0x4c2f420
+0x4c2f420->{';'(59) 4:2.009 ";" []})
+Reducing stack by rule 7 (line 51):
+   $1 = nterm expr ()
+   $2 = token '+' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 43, yyvaluep = 0x4c2ef10
+0x4c2ef10->{'+'(43) 4:2.005 "+" []})
+   $3 = nterm expr ()
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2ef10 (+) adopting 0x4c2ecb0 (*)
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2ef10 (+) adopting 0x4c2f210 (*)
+-> $$ = nterm expr ()
+Stack now 0 2 11 16
+Entering state 24
+Next token is token ';' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 59, yyvaluep = 0x4c2f420
+0x4c2f420->{';'(59) 4:2.009 ";" []})
+Reducing stack by rule 6 (line 50):
+   $1 = nterm expr ()
+   $2 = token '=' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 61, yyvaluep = 0x4c2ea50
+0x4c2ea50->{'='(61) 4:2.001 "=" []})
+   $3 = nterm expr ()
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2ea50 (=) adopting 0x4c2e920 (a)
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2ea50 (=) adopting 0x4c2ef10 (+)
+-> $$ = nterm expr ()
+Stack now 0 2
+Entering state 11
+Next token is token ';' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 59, yyvaluep = 0x4c2f420
+0x4c2f420->{';'(59) 4:2.009 ";" []})
+Shifting token ';' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 59, yyvaluep = 0x4c2f420
+0x4c2f420->{';'(59) 4:2.009 ";" []})
+Entering state 22
+Reducing stack by rule 2 (line 44):
+   $1 = nterm stmtseq ()
+   $2 = nterm expr ()
+   $3 = token ';' (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 59, yyvaluep = 0x4c2f420
+0x4c2f420->{';'(59) 4:2.009 ";" []})
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2F420]-> 4:2.9: ';': ";")
+DEBUGF(a): astree.cc[32] adopt1():
+0x4c2a3d0 (<<ROOT>>) adopting 0x4c2ea50 (=)
+-> $$ = nterm stmtseq ()
+Stack now 0
+Entering state 2
+Reading a token: --accepting rule at line 34 ("
+")
+--(end of buffer or a NUL)
+--EOF (start condition 0)
+Now at end of input.
+Reducing stack by rule 1 (line 41):
+   $1 = nterm stmtseq ()
+-> $$ = nterm program ()
+Stack now 0
+Entering state 1
+Now at end of input.
+Shifting token $end (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 0, yyvaluep = 0x4c2f420
+$end(0)
+)
+Entering state 3
+Stack now 0 1 3
+Cleanup: popping token $end (DEBUGF(f): astree.cc[79] yyprint():
+toknum = 0, yyvaluep = 0x4c2f420
+$end(0)
+)
+Cleanup: popping nterm program ()
+DEBUGF(a): main.cc[87] main():
+
+<<ROOT>> 0x4c2a3d0->{ROOT(258) 0:0.000 "<<ROOT>>" [0x4c2ea50]}
+   = 0x4c2ea50->{'='(61) 4:2.001 "=" [0x4c2e920 0x4c2ef10]}
+      a 0x4c2e920->{IDENT(259) 4:2.000 "a" []}
+      + 0x4c2ef10->{'+'(43) 4:2.005 "+" [0x4c2ecb0 0x4c2f210]}
+         * 0x4c2ecb0->{'*'(42) 4:2.003 "*" [0x4c2eb80 0x4c2ede0]}
+            b 0x4c2eb80->{IDENT(259) 4:2.002 "b" []}
+            c 0x4c2ede0->{IDENT(259) 4:2.004 "c" []}
+         * 0x4c2f210->{'*'(42) 4:2.007 "*" [0x4c2f0e0 0x4c2f2f0]}
+            d 0x4c2f0e0->{IDENT(259) 4:2.006 "d" []}
+            e 0x4c2f2f0->{IDENT(259) 4:2.008 "e" []}
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2F2F0]-> 4:2.8: IDENT: "e")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2F0E0]-> 4:2.6: IDENT: "d")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2F210]-> 4:2.7: '*': "*")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2EDE0]-> 4:2.4: IDENT: "c")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2EB80]-> 4:2.2: IDENT: "b")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2ECB0]-> 4:2.3: '*': "*")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2EF10]-> 4:2.5: '+': "+")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2E920]-> 4:2.0: IDENT: "a")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2EA50]-> 4:2.1: '=': "=")
+DEBUGF(f): astree.cc[97] free_ast():
+free [4C2A3D0]-> 0:0.0: ROOT: "<<ROOT>>")
+DEBUGF(s): main.cc[92] main():
+
+stringset[   1]:   12638182802509129152 0x4c2f3d0->"e"
+stringset[   3]:   12638127826927718602 0x4c2eff0->"+"
+stringset[   5]:   12638145419113769978 0x4c2f500->";"
+stringset[   6]:   12638190499090526629 0x4c2ec60->"b"
+stringset[   7]:   12638138822044000712 0x4c2eb30->"="
+                   12638187200555641996 0x4c2ea00->"a"
+stringset[   8]:   12638183902020757363 0x4c2f1c0->"d"
+                   15588046758478310861 0x4c2a4c0->"<<ROOT>>"
+stringset[  10]:   12638189399578898418 0x4c2eec0->"c"
+                   12638128926439346813 0x4c2ed90->"*"
+load_factor = 0.909
+bucket_count = 11
+max_bucket_size = 2
+==5540== 
+==5540== HEAP SUMMARY:
+==5540==     in use at exit: 0 bytes in 0 blocks
+==5540==   total heap usage: 57 allocs, 57 frees, 18,450 bytes allocated
+==5540== 
+==5540== All heap blocks were freed -- no leaks are possible
+==5540== 
+==5540== For counts of detected and suppressed errors, rerun with: -v
+==5540== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 6 from 6)
+EXIT STATUS 0
