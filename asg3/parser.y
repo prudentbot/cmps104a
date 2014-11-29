@@ -52,19 +52,23 @@ program     : ROOT program
             ;
 
 
-structdef   : TOK_STRUCT TOK_TYPEID '{' fielddecls '}'
+structdef   : TOK_STRUCT TOK_IDENT '{' fielddecls '}' { $$ = adopt1($1, adopt1sym($2, $4, TOK_TYPEID)); }
             ;
 
-fielddecls  : fielddecls fielddecl ';'
-            | fielddecl ';'
+fielddecls  : fielddecls fielddecl ';' { $$ = adopt1($$, $2); }
             |
             ;
 
-fielddecl   : basetype TOK_ARRAY TOK_DECLID
-            | basetype TOK_DECLID
+fielddecl   : basetype TOK_ARRAY TOK_IDENT  { $$ = adopt1($1, adopt1($2, adopt1sym($3, NULL, TOK_DECLID))); }
+            | basetype TOK_DECLID { $$ = adopt1($1, adopt1sym($2, NULL, TOK_DECLID)); }
             ;
 
-basetype    : TOK_VOID | TOK_BOOL | TOK_CHAR | TOK_INT | TOK_STRING | TOK_TYPEID
+basetype    : TOK_VOID { $$ = $1; } 
+            | TOK_BOOL { $$ = $1; }
+            | TOK_CHAR { $$ = $1; }
+            | TOK_INT { $$ = $1; }
+            | TOK_STRING { $$ = $1; }
+            | TOK_TYPEID {$$ = $1;}
             ;
 
 function    : identdecl '(' identdecls ')' block
@@ -80,7 +84,7 @@ identdecl   : basetype TOK_ARRAY TOK_DECLID
             ;
 
 block       : '{' statements '}'
-            : '{' '}'
+            | '{' '}'
             | ';'
 
 statements  : statements statement
@@ -104,8 +108,7 @@ return      : TOK_RETURN expr ';'
             | TOK_RETURN ';'
             ;
 
-expr        : expr '=' expr         { $$ = adopt2($2, $1, $3);}
-            
+expr        : expr '=' expr         { $$ = adopt2($2, $1, $3);} 
             | expr '+' expr         { $$ = adopt2($2, $1, $3);}
             | expr '-' expr         { $$ = adopt2($2, $1, $3);}
             | expr '*' expr         { $$ = adopt2($2, $1, $3);}
@@ -113,10 +116,16 @@ expr        : expr '=' expr         { $$ = adopt2($2, $1, $3);}
             | expr '%' expr         { $$ = adopt2($2, $1, $3);}
             | expr TOK_EQ expr      { $$ = adopt2($2, $1, $3);}
             | expr TOK_NE expr      { $$ = adopt2($2, $1, $3);}
+            | call
             | expr  
 
+call : TOK_IDENT '(' args ')'
+;
 
-
+args: args ',' expr
+| expr
+|
+;
 
 %%
 
