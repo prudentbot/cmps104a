@@ -28,7 +28,7 @@
 %token TOK_BLOCK TOK_CALL TOK_IFELSE TOK_INITDECL
 %token TOK_POS TOK_NEG TOK_NEWARRAY TOK_FIELD
 
-%start program
+%start start
 
 %%
 
@@ -43,14 +43,24 @@
         | TOK_ORD | TOK_CHR
         ;
 */ 
+start : program { yyparse_astree = $1; }
+;
 
+program : program structdef { $$ = adopt1 ($1, $2); }
+| program function { $$ = adopt1($1, $2); }
+| program statement { $$ = adopt1($1, $2); }
+| program error '}' { $$ = $1; }
+| program error ';' { $$ = $1; }
+|  { $$ = new_parseroot (); }
+;
+/*
 program     : ROOT program
             | program structdef
             | program function
             | program statement
             |
             ;
-
+*/
 
 structdef   : TOK_STRUCT TOK_IDENT '{' fielddecls '}' { $$ = adopt1($1, adopt1sym($2, $4, TOK_TYPEID)); }
             ;
