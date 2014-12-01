@@ -132,6 +132,7 @@ expr        : expr '=' expr         { $$ = adopt2($2, $1, $3);}
             | expr TOK_EQ expr      { $$ = adopt2($2, $1, $3);}
             | expr TOK_NE expr      { $$ = adopt2($2, $1, $3);}
             | call { $$ = $1; }
+            | allocator { $$ = $1; }
             /*| expr { $$ = $1; }*/
             | constant { $$ = $1;}
             ;
@@ -142,6 +143,11 @@ call : TOK_IDENT '(' args ')' { $$ = adopt1($1, $3); }
 
 args: args ',' expr { $$ = adopt1($1, $3); }
 | expr { $$ = $1; }
+;
+
+allocator: TOK_NEW TOK_IDENT '(' ')' { $2->symbol = TOK_TYPEID; $$ = adopt1($1, $2); } 
+| TOK_NEW TOK_STRING '(' expr ')' { $$ = adopt1($1, adopt1($2, $4)); }
+| TOK_NEW basetype '[' expr ']' { $$ = adopt1($1, adopt1($2, $4)); }
 ;
 
 constant : TOK_INTCON { $$ = $1; }
