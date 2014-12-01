@@ -113,13 +113,15 @@ int main (int argc, char** argv) {
 
    scanner_outputfile(s.c_str());
 
-   while(yylex()){      
-   }
+   printf("%s\n", "here");
+   yyparse();
 
    //open the output file
    FILE* outfile = fopen(p.c_str(), "w");
    //dump stringset to file
    dump_stringset(outfile);
+   
+   dump_astree(stdout, yyparse_astree);
 
    return get_exitstatus();
 }

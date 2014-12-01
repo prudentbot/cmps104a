@@ -3,4 +3,6 @@
 
 #include "oclib.oh"
 
-puts ("Hello, world!\n");
+puts 
+("Hello, world!\n")
+;

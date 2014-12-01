@@ -23,10 +23,10 @@
 %token TOK_FALSE TOK_TRUE TOK_NULL TOK_NEW TOK_ARRAY
 %token TOK_EQ TOK_NE TOK_LT TOK_LE TOK_GT TOK_GE
 %token TOK_IDENT TOK_INTCON TOK_CHARCON TOK_STRINGCON
-%token TOK_ORD TOK_CHR
+%token TOK_ORD TOK_CHR TOK_DECLID TOK_TYPEID 
 
 %token TOK_BLOCK TOK_CALL TOK_IFELSE TOK_INITDECL
-%token TOK_POS TOK_NEG TOK_NEWARRAY TOK_TYPEID TOK_FIELD
+%token TOK_POS TOK_NEG TOK_NEWARRAY TOK_FIELD
 
 %start program
 
@@ -59,8 +59,8 @@ fielddecls  : fielddecls fielddecl ';' { $$ = adopt1($$, $2); }
             |
             ;
 
-fielddecl   : basetype TOK_ARRAY TOK_IDENT  { $$ = adopt1($1, adopt1($2, adopt1sym($3, NULL, TOK_DECLID))); }
-            | basetype TOK_DECLID { $$ = adopt1($1, adopt1sym($2, NULL, TOK_DECLID)); }
+fielddecl   : basetype TOK_ARRAY TOK_IDENT  { $3->symbol = TOK_DECLID; $$ = adopt1($1, adopt1($2, $3)); }
+            | basetype TOK_IDENT { $2->symbol = TOK_DECLID; $$ = adopt1($1, $2); }
             ;
 
 basetype    : TOK_VOID { $$ = $1; } 
@@ -68,44 +68,49 @@ basetype    : TOK_VOID { $$ = $1; }
             | TOK_CHAR { $$ = $1; }
             | TOK_INT { $$ = $1; }
             | TOK_STRING { $$ = $1; }
-            | TOK_TYPEID {$$ = $1;}
+            | TOK_TYPEID { $$ = $1; }
             ;
 
-function    : identdecl '(' identdecls ')' block
-            | identdecl '(' ')' block
+function    : identdecl '(' identdecls ')' block { $$ = adopt2($1, $3, $5); }
+            | identdecl '(' ')' block { $$ = adopt1($1, $4); }
             ;
 
-identdecls  : identdecls ',' identdecl
-            | identdecl
+identdecls  : identdecls ',' identdecl { $$ = adopt1($1, $3); }
+            | identdecl { $$ = $1; }
             ;
 
-identdecl   : basetype TOK_ARRAY TOK_DECLID
-            | basetype TOK_DECLID
+identdecl   : basetype TOK_ARRAY TOK_IDENT { $3->symbol = TOK_DECLID; $$ = adopt2($1, $2, $3); }
+            | basetype TOK_IDENT { $2->symbol = TOK_DECLID; adopt1($1, $2); } 
             ;
 
-block       : '{' statements '}'
-            | '{' '}'
+block       : '{' statements '}' { $$ = $2; }
+            | '{' '}' 
             | ';'
 
-statements  : statements statement
-            | statement
+statements  : statements statement { $$ = adopt1($1, $2); }
+            | statement { $$ = $1; }
             ;
 
-statement   : block | vardecl | while | ifelse | return | expr ';'
+statement   : block { $$ = $1; }
+| vardecl { $$ = $1; }
+| while { $$ = $1; }
+| ifelse { $$ = $1; }
+| return { $$ = $1; }
+| expr ';' { $$ = $1; }
+;
+
+vardecl     : identdecl '=' expr ';' { $$ = adopt1($1, $3); }
             ;
 
-vardecl     : identdecl '=' expr ';'
+while       : TOK_WHILE '(' expr ')' statement { $$ = adopt2($1, $3, $5); }
             ;
 
-while       : TOK_WHILE '(' expr ')' statement
+ifelse      : TOK_IF '(' expr ')' statement TOK_ELSE statement { $$ = adopt2($1, $3, $5); $$ = adopt1($1, $6); $$ = adopt1($6, $7); }
+            | TOK_IF '(' expr ')' statement { $$ = adopt2($1, $3, $5); }
             ;
 
-ifelse      : TOK_IF '(' expr ')' statement TOK_ELSE statement
-            | TOK_IF '(' expr ')' statement
-            ;
-
-return      : TOK_RETURN expr ';'
-            | TOK_RETURN ';'
+return      : TOK_RETURN expr ';' { $$ = adopt1($1, $2); }
+            | TOK_RETURN ';'{ $$ = $1; }
             ;
 
 expr        : expr '=' expr         { $$ = adopt2($2, $1, $3);} 
@@ -116,15 +121,25 @@ expr        : expr '=' expr         { $$ = adopt2($2, $1, $3);}
             | expr '%' expr         { $$ = adopt2($2, $1, $3);}
             | expr TOK_EQ expr      { $$ = adopt2($2, $1, $3);}
             | expr TOK_NE expr      { $$ = adopt2($2, $1, $3);}
-            | call
-            | expr  
+            | call { $$ = $1; }
+            /*| expr { $$ = $1; }*/
+            | constant { $$ = $1;}
+            ;
 
-call : TOK_IDENT '(' args ')'
+call : TOK_IDENT '(' args ')' { $$ = adopt1($1, $3); }
+| TOK_IDENT '(' ')' { $$ = $1; }
 ;
 
-args: args ',' expr
-| expr
-|
+args: args ',' expr { $$ = adopt1($1, $3); }
+| expr { $$ = $1; }
+;
+
+constant : TOK_INTCON { $$ = $1; }
+| TOK_STRINGCON { $$ = $1; }
+| TOK_CHARCON { $$ = $1; }
+| TOK_FALSE { $$ = $1; }
+| TOK_TRUE { $$ = $1; }
+| TOK_NULL { $$ = $1; }
 ;
 
 %%
